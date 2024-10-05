@@ -1,6 +1,6 @@
 # Task Management API
 
-This project is a Task Management API built with Django and Django REST Framework. It includes user authentication functionality and task management features.
+This project is a Task Management API built with Django and Django REST Framework. It includes task management features and user authentication functionality.
 
 ## Setup
 
@@ -46,10 +46,19 @@ The Task model includes the following fields:
 - priority_level: CharField (choices: LOW, MEDIUM, HIGH)
 - status: CharField (choices: PENDING, COMPLETED)
 - user: ForeignKey to User model
+- completed_at: DateTimeField (null=True, blank=True)
 
 ### Task Management
 - List/Create Tasks: GET/POST `/api/tasks/`
 - Retrieve/Update/Delete Task: GET/PUT/DELETE `/api/tasks/<task_id>/`
+- Mark Task as Complete: POST /api/tasks/<task_id>/complete/
+- Mark Task as Incomplete: POST /api/tasks/<task_id>/incomplete/
+
+### Task Completion Features
+
+- Tasks can be marked as complete or incomplete using the respective endpoints.
+- When a task is marked as complete, the completed_at timestamp is set.
+- Completed tasks cannot be edited unless they are first marked as incomplete.
 
 #### Filtering and Sorting
 - Filter tasks: GET `/api/tasks/?status=PENDING&priority_level=HIGH`
