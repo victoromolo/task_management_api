@@ -46,6 +46,8 @@ The Task model includes the following fields:
 - priority_level: CharField (choices: LOW, MEDIUM, HIGH)
 - status: CharField (choices: PENDING, COMPLETED)
 - user: ForeignKey to User model
+- created_at: DateTimeField
+- updated_at: DateTimeField
 - completed_at: DateTimeField (null=True, blank=True)
 
 ### Task Management
@@ -53,12 +55,20 @@ The Task model includes the following fields:
 - Retrieve/Update/Delete Task: GET/PUT/DELETE `/api/tasks/<task_id>/`
 - Mark Task as Complete: POST /api/tasks/<task_id>/complete/
 - Mark Task as Incomplete: POST /api/tasks/<task_id>/incomplete/
+- Retrieve Task History: GET /api/tasks/<task_id>/history/
 
 ### Task Completion Features
 
 - Tasks can be marked as complete or incomplete using the respective endpoints.
 - When a task is marked as complete, the completed_at timestamp is set.
 - Completed tasks cannot be edited unless they are first marked as incomplete.
+
+### Task History Features
+
+- Task completion and reopening actions are tracked in the TaskHistory model.
+- Users can retrieve a list of all their completed tasks.
+- Users can view the history of actions performed on a specific task.
+- The task history includes the action performed (COMPLETED or REOPENED) and the timestamp of the action.
 
 #### Filtering and Sorting
 - Filter tasks: GET `/api/tasks/?status=PENDING&priority_level=HIGH`

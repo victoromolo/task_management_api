@@ -38,8 +38,25 @@ class Task(models.Model):
         self.status = 'COMPLETED'
         self.completed_at = timezone.now()
         self.save()
+        self.add_history('COMPLETED')
 
     def mark_as_pending(self):
         self.status = 'PENDING'
         self.completed_at = None
         self.save()
+        self.add_history('REOPENED')
+    
+    def add_history(self, action):
+        TaskHistory.objects.create(task=self, user=self.user, action=action)
+
+class TaskHistory(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='history')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.CharField(max_length=20, choices=[('COMPLETED', 'Completed'), ('REOPENED', 'Reopened')])
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"{self.task.title} - {self.action} at {self.timestamp}"

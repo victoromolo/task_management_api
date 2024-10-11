@@ -1,14 +1,21 @@
 from rest_framework import serializers
 from .models import Task
 from django.utils import timezone
+from .models import Task, TaskHistory
+
+class TaskHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskHistory
+        fields = ['action', 'timestamp']
 
 class TaskSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     completed_at = serializers.ReadOnlyField()
+    history = TaskHistorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'due_date', 'priority_level', 'status', 'user', 'created_at', 'updated_at', 'completed_at']
+        fields = ['id', 'title', 'description', 'due_date', 'priority_level', 'status', 'user', 'created_at', 'updated_at', 'completed_at', 'history']
 
     def validate_due_date(self, value):
         if value < timezone.now().date():
@@ -30,3 +37,4 @@ class TaskSerializer(serializers.ModelSerializer):
             if any(field in data for field in ['title', 'description', 'due_date', 'priority_level']):
                 raise serializers.ValidationError("Completed tasks cannot be edited unless reverted to Pending.")
         return data
+

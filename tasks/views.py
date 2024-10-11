@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Task
-from .serializers import TaskSerializer
+from .models import Task, TaskHistory
+from .serializers import TaskSerializer, TaskHistorySerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -42,6 +42,23 @@ class TaskViewSet(viewsets.ModelViewSet):
         if instance.status == 'COMPLETED' and not partial:
             return Response({"detail": "Completed tasks cannot be fully updated."}, status=status.HTTP_400_BAD_REQUEST)
         self.perform_update(serializer)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def completed(self, request):
+        completed_tasks = self.get_queryset().filter(status='COMPLETED')
+        page = self.paginate_queryset(completed_tasks)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(completed_tasks, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def history(self, request, pk=None):
+        task = self.get_object()
+        history = task.history.all()
+        serializer = TaskHistorySerializer(history, many=True)
         return Response(serializer.data)
 
 
