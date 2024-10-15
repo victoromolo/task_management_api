@@ -98,16 +98,12 @@ Authorization: Token <your-token-here>
     "status": "Pending"
 }
 
-### Static Files
+Static Files
 Static files (CSS and JavaScript) are stored in the static/ directory. I have added:
 
 - static/css/styles.css: Contains all the CSS styles for the project.
 - static/js/scripts.js: Contains JavaScript functionality for the project.
 
-To include static files in your templates, use the {% static %} template tag:
-htmlCopy{% load static %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
-<script src="{% static 'js/scripts.js' %}"></script>
 Forms
 We've created custom forms for user authentication and task management:
 Accounts App Forms (accounts/forms.py):
