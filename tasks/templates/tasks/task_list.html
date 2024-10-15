@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+    <h2>Tasks</h2>
+    <a href="{% url 'task_create' %}">Create New Task</a>
+    
+    <form method="get">
+        {{ filter_form.as_p }}
+        <button type="submit">Apply Filters</button>
+    </form>
+    
+    <ul>
+    {% for task in tasks %}
+        <li>
+            <a href="{% url 'task_detail' task.id %}">{{ task.title }}</a>
+            - Due: {{ task.due_date }} - Priority: {{ task.get_priority_level_display }}
+            - Status: {{ task.get_status_display }}
+        </li>
+    {% empty %}
+        <li>No tasks found.</li>
+    {% endfor %}
+    </ul>
+{% endblock %} 

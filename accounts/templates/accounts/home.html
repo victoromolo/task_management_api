@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Task Management API{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Task Management API</h1>
+    <p>This is a simple task management application that allows you to create, update, and manage your tasks.</p>
+    
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}! You are logged in.</p>
+        <a href="{% url 'task_list' %}">View Your Tasks</a>
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a> to start managing your tasks.</p>
+    {% endif %}
+{% endblock %} 

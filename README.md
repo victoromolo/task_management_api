@@ -98,3 +98,46 @@ Authorization: Token <your-token-here>
     "status": "Pending"
 }
 
+### Static Files
+Static files (CSS and JavaScript) are stored in the static/ directory. I have added:
+
+- static/css/styles.css: Contains all the CSS styles for the project.
+- static/js/scripts.js: Contains JavaScript functionality for the project.
+
+To include static files in your templates, use the {% static %} template tag:
+htmlCopy{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<script src="{% static 'js/scripts.js' %}"></script>
+Forms
+We've created custom forms for user authentication and task management:
+Accounts App Forms (accounts/forms.py):
+
+CustomUserCreationForm: Extends Django's UserCreationForm for user registration.
+LoginForm: Custom form for user login.
+
+Tasks App Forms (tasks/forms.py):
+
+TaskForm: ModelForm for creating and updating tasks.
+TaskFilterForm: Form for filtering and sorting tasks.
+
+Templates
+Templates are stored in the templates/ directory. i have created:
+
+- base.html: The base template that other templates extend.
+- home.html: The homepage template.
+Account-related templates in templates/accounts/:
+
+- login.html
+- register.html
+- profile.html
+
+
+Task-related templates in templates/tasks/:
+
+- task_list.html
+- task_detail.html
+- task_form.html
+
+
+
+Templates use Django's template language for dynamic content and extend the base.html template for consistent layout.

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block content %}
+    <h2>{{ task.title }}</h2>
+    <p>Description: {{ task.description }}</p>
+    <p>Due Date: {{ task.due_date }}</p>
+    <p>Priority: {{ task.get_priority_level_display }}</p>
+    <p>Status: {{ task.get_status_display }}</p>
+    
+    <a href="{% url 'task_update' task.id %}">Edit</a>
+    <a href="{% url 'task_delete' task.id %}">Delete</a>
+    
+    {% if task.status == 'PENDING' %}
+        <form method="post" action="{% url 'task_complete' task.id %}">
+            {% csrf_token %}
+            <button type="submit">Mark as Complete</button>
+        </form>
+    {% else %}
+        <form method="post" action="{% url 'task_incomplete' task.id %}">
+            {% csrf_token %}
+            <button type="submit">Mark as Incomplete</button>
+        </form>
+    {% endif %}
+    
+    <h3>Task History</h3>
+    <ul>
+    {% for history in task.history.all %}
+        <li>{{ history.action }} at {{ history.timestamp }}</li>
+    {% empty %}
+        <li>No history available.</li>
+    {% endfor %}
+    </ul>
+{% endblock %} 
