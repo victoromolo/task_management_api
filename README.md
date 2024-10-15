@@ -33,9 +33,9 @@ Additional fields can be added to the `CustomUser` model in `accounts/models.py`
 ## API Endpoints
 
 ### User Authentication
-- User Registration: POST `/api/accounts/register/`
-- User Login: POST `/api/accounts/login/`
-- User Logout: POST `/api/accounts/logout/`
+- User Registration: POST `/accounts/register/`
+- User Login: POST `/accounts/login/`
+- User Logout: POST `/accounts/logout/`
 
 ### Task Model
 The Task model includes the following fields:
@@ -51,11 +51,11 @@ The Task model includes the following fields:
 - completed_at: DateTimeField (null=True, blank=True)
 
 ### Task Management
-- List/Create Tasks: GET/POST `/api/tasks/`
-- Retrieve/Update/Delete Task: GET/PUT/DELETE `/api/tasks/<task_id>/`
-- Mark Task as Complete: POST /api/tasks/<task_id>/complete/
-- Mark Task as Incomplete: POST /api/tasks/<task_id>/incomplete/
-- Retrieve Task History: GET /api/tasks/<task_id>/history/
+- List/Create Tasks: GET/POST `/tasks/create/`
+- Retrieve/Update/Delete Task: GET/PUT/DELETE `/tasks/<task_id>/`
+- Mark Task as Complete: POST /tasks/<task_id>/complete/
+- Mark Task as Incomplete: POST /tasks/<task_id>/incomplete/
+- Retrieve Task History: GET /tasks/<task_id>/history/
 
 ### Task Completion Features
 
@@ -71,8 +71,8 @@ The Task model includes the following fields:
 - The task history includes the action performed (COMPLETED or REOPENED) and the timestamp of the action.
 
 #### Filtering and Sorting
-- Filter tasks: GET `/api/tasks/?status=PENDING&priority_level=HIGH`
-- Sort tasks: GET `/api/tasks/?ordering=-due_date`
+- Filter tasks: GET `/tasks/?status=PENDING&priority_level=HIGH`
+- Sort tasks: GET `/tasks/?ordering=-due_date`
 
 ## Authentication
 
@@ -85,7 +85,7 @@ Authorization: Token <your-token-here>
 ## Task Endpoints
 
 ### Create a Task
-**URL**: `/api/tasks/`  
+**URL**: `/tasks/`  
 **Method**: `POST`  
 **Authentication**: Required  
 **Request Body**:  
@@ -98,42 +98,40 @@ Authorization: Token <your-token-here>
     "status": "Pending"
 }
 
-Static Files
-Static files (CSS and JavaScript) are stored in the static/ directory. I have added:
+### Static Files
+Static files CSS and JavaScript are stored in the static directory. I have added:
 
-- static/css/styles.css: Contains all the CSS styles for the project.
-- static/js/scripts.js: Contains JavaScript functionality for the project.
+- `/static/css/styles.css/` Contains all the CSS styles for the project.
+- `/static/js/scripts.js/` Contains JavaScript functionality for the project.
 
-Forms
+### Forms
 We've created custom forms for user authentication and task management:
-Accounts App Forms (accounts/forms.py):
+- Accounts App Forms `/accounts/forms.py/`:
+- CustomUserCreationForm: Extends Django's UserCreationForm for user registration.
+- LoginForm: Custom form for user login.
 
-CustomUserCreationForm: Extends Django's UserCreationForm for user registration.
-LoginForm: Custom form for user login.
+### Tasks App Forms `/tasks/forms.py/`:
 
-Tasks App Forms (tasks/forms.py):
+- TaskForm: ModelForm for creating and updating tasks.
+- TaskFilterForm: Form for filtering and sorting tasks.
 
-TaskForm: ModelForm for creating and updating tasks.
-TaskFilterForm: Form for filtering and sorting tasks.
-
-Templates
+### Templates
 Templates are stored in the templates/ directory. i have created:
-
 - base.html: The base template that other templates extend.
 - home.html: The homepage template.
-Account-related templates in templates/accounts/:
+
+# Account-related templates in `/templates/accounts/`:
 
 - login.html
 - register.html
 - profile.html
 
-
-Task-related templates in templates/tasks/:
+#Task-related templates in `/templates/tasks/`:
 
 - task_list.html
 - task_detail.html
 - task_form.html
 
-
-
+```
 Templates use Django's template language for dynamic content and extend the base.html template for consistent layout.
+```
